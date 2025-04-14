@@ -80,6 +80,7 @@ The LightRAG Server supports two operational modes:
 
 ```
 lightrag-server
+lightrag-server --log-level DEBUG
 ```
 * The multiprocess Gunicorn + Uvicorn mode (production mode, not supported on Windows environments)
 
