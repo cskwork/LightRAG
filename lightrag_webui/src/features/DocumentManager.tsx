@@ -216,33 +216,42 @@ export default function DocumentManager() {
     });
   }, [sortField, sortDirection, showFileName]);
 
+  // Define a new type that includes status information
+  type DocStatusWithStatus = DocStatusResponse & { status: DocStatus };
+
   const filteredAndSortedDocs = useMemo(() => {
     if (!docs) return null;
 
-    let filteredDocs = { ...docs };
+    // Create a flat array of documents with status information
+    const allDocuments: DocStatusWithStatus[] = [];
 
-    if (statusFilter !== 'all') {
-      filteredDocs = {
-        ...docs,
-        statuses: {
-          pending: [],
-          processing: [],
-          processed: [],
-          failed: [],
-          [statusFilter]: docs.statuses[statusFilter] || []
-        }
-      };
+    if (statusFilter === 'all') {
+      // When filter is 'all', include documents from all statuses
+      Object.entries(docs.statuses).forEach(([status, documents]) => {
+        documents.forEach(doc => {
+          allDocuments.push({
+            ...doc,
+            status: status as DocStatus
+          });
+        });
+      });
+    } else {
+      // When filter is specific status, only include documents from that status
+      const documents = docs.statuses[statusFilter] || [];
+      documents.forEach(doc => {
+        allDocuments.push({
+          ...doc,
+          status: statusFilter
+        });
+      });
     }
 
-    if (!sortField || !sortDirection) return filteredDocs;
+    // Sort all documents together if sort field and direction are specified
+    if (sortField && sortDirection) {
+      return sortDocuments(allDocuments);
+    }
 
-    const sortedStatuses = Object.entries(filteredDocs.statuses).reduce((acc, [status, documents]) => {
-      const sortedDocuments = sortDocuments(documents);
-      acc[status as DocStatus] = sortedDocuments;
-      return acc;
-    }, {} as DocsStatusesResponse['statuses']);
-
-    return { ...filteredDocs, statuses: sortedStatuses };
+    return allDocuments;
   }, [docs, sortField, sortDirection, statusFilter, sortDocuments]);
 
   // Calculate document counts for each status
@@ -352,29 +361,8 @@ export default function DocumentManager() {
       // Check again if component is still mounted after the request completes
       if (!isMountedRef.current) return;
 
-      // Get new status counts (treat null as all zeros)
-      const newStatusCounts = {
-        processed: docs?.statuses?.processed?.length || 0,
-        processing: docs?.statuses?.processing?.length || 0,
-        pending: docs?.statuses?.pending?.length || 0,
-        failed: docs?.statuses?.failed?.length || 0
-      }
-
-      // Check if any status count has changed
-      const hasStatusCountChange = (Object.keys(newStatusCounts) as Array<keyof typeof newStatusCounts>).some(
-        status => newStatusCounts[status] !== prevStatusCounts.current[status]
-      )
-
-      // Trigger health check if changes detected and component is still mounted
-      if (hasStatusCountChange && isMountedRef.current) {
-        useBackendState.getState().check()
-      }
-
       // Only update state if component is still mounted
       if (isMountedRef.current) {
-        // Update previous status counts
-        prevStatusCounts.current = newStatusCounts
-
         // Update docs state
         if (docs && docs.statuses) {
           const numDocuments = Object.values(docs.statuses).reduce(
@@ -448,6 +436,32 @@ export default function DocumentManager() {
       clearInterval(interval)
     }
   }, [health, fetchDocuments, t, currentTab])
+
+  // Monitor docs changes to check status counts and trigger health check if needed
+  useEffect(() => {
+    if (!docs) return;
+
+    // Get new status counts
+    const newStatusCounts = {
+      processed: docs?.statuses?.processed?.length || 0,
+      processing: docs?.statuses?.processing?.length || 0,
+      pending: docs?.statuses?.pending?.length || 0,
+      failed: docs?.statuses?.failed?.length || 0
+    }
+
+    // Check if any status count has changed
+    const hasStatusCountChange = (Object.keys(newStatusCounts) as Array<keyof typeof newStatusCounts>).some(
+      status => newStatusCounts[status] !== prevStatusCounts.current[status]
+    )
+
+    // Trigger health check if changes detected and component is still mounted
+    if (hasStatusCountChange && isMountedRef.current) {
+      useBackendState.getState().check()
+    }
+
+    // Update previous status counts
+    prevStatusCounts.current = newStatusCounts
+  }, [docs]);
 
   // Add dependency on sort state to re-render when sort changes
   useEffect(() => {
@@ -641,69 +655,71 @@ export default function DocumentManager() {
                       </TableRow>
                     </TableHeader>
                     <TableBody className="text-sm overflow-auto">
-                      {filteredAndSortedDocs?.statuses && Object.entries(filteredAndSortedDocs.statuses).flatMap(([status, documents]) =>
-                        documents.map((doc) => (
-                          <TableRow key={doc.id}>
-                            <TableCell className="truncate font-mono overflow-visible max-w-[250px]">
-                              {showFileName ? (
-                                <>
-                                  <div className="group relative overflow-visible tooltip-container">
-                                    <div className="truncate">
-                                      {getDisplayFileName(doc, 30)}
-                                    </div>
-                                    <div className="invisible group-hover:visible tooltip">
-                                      {doc.file_path}
-                                    </div>
-                                  </div>
-                                  <div className="text-xs text-gray-500">{doc.id}</div>
-                                </>
-                              ) : (
+                      {filteredAndSortedDocs && filteredAndSortedDocs.map((doc) => (
+                        <TableRow key={doc.id}>
+                          <TableCell className="truncate font-mono overflow-visible max-w-[250px]">
+                            {showFileName ? (
+                              <>
                                 <div className="group relative overflow-visible tooltip-container">
                                   <div className="truncate">
-                                    {doc.id}
+                                    {getDisplayFileName(doc, 30)}
                                   </div>
                                   <div className="invisible group-hover:visible tooltip">
                                     {doc.file_path}
                                   </div>
                                 </div>
-                              )}
-                            </TableCell>
-                            <TableCell className="max-w-xs min-w-45 truncate overflow-visible">
+                                <div className="text-xs text-gray-500">{doc.id}</div>
+                              </>
+                            ) : (
                               <div className="group relative overflow-visible tooltip-container">
                                 <div className="truncate">
-                                  {doc.content_summary}
+                                  {doc.id}
                                 </div>
                                 <div className="invisible group-hover:visible tooltip">
-                                  {doc.content_summary}
+                                  {doc.file_path}
                                 </div>
                               </div>
-                            </TableCell>
-                            <TableCell>
-                              {status === 'processed' && (
-                                <span className="text-green-600">{t('documentPanel.documentManager.status.completed')}</span>
-                              )}
-                              {status === 'processing' && (
-                                <span className="text-blue-600">{t('documentPanel.documentManager.status.processing')}</span>
-                              )}
-                              {status === 'pending' && <span className="text-yellow-600">{t('documentPanel.documentManager.status.pending')}</span>}
-                              {status === 'failed' && <span className="text-red-600">{t('documentPanel.documentManager.status.failed')}</span>}
-                              {doc.error && (
-                                <span className="ml-2 text-red-500" title={doc.error}>
-                                  ⚠️
-                                </span>
-                              )}
-                            </TableCell>
-                            <TableCell>{doc.content_length ?? '-'}</TableCell>
-                            <TableCell>{doc.chunks_count ?? '-'}</TableCell>
-                            <TableCell className="truncate">
-                              {new Date(doc.created_at).toLocaleString()}
-                            </TableCell>
-                            <TableCell className="truncate">
-                              {new Date(doc.updated_at).toLocaleString()}
-                            </TableCell>
-                          </TableRow>
-                        )))
-                      }
+                            )}
+                          </TableCell>
+                          <TableCell className="max-w-xs min-w-45 truncate overflow-visible">
+                            <div className="group relative overflow-visible tooltip-container">
+                              <div className="truncate">
+                                {doc.content_summary}
+                              </div>
+                              <div className="invisible group-hover:visible tooltip">
+                                {doc.content_summary}
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            {doc.status === 'processed' && (
+                              <span className="text-green-600">{t('documentPanel.documentManager.status.completed')}</span>
+                            )}
+                            {doc.status === 'processing' && (
+                              <span className="text-blue-600">{t('documentPanel.documentManager.status.processing')}</span>
+                            )}
+                            {doc.status === 'pending' && (
+                              <span className="text-yellow-600">{t('documentPanel.documentManager.status.pending')}</span>
+                            )}
+                            {doc.status === 'failed' && (
+                              <span className="text-red-600">{t('documentPanel.documentManager.status.failed')}</span>
+                            )}
+                            {doc.error && (
+                              <span className="ml-2 text-red-500" title={doc.error}>
+                                ⚠️
+                              </span>
+                            )}
+                          </TableCell>
+                          <TableCell>{doc.content_length ?? '-'}</TableCell>
+                          <TableCell>{doc.chunks_count ?? '-'}</TableCell>
+                          <TableCell className="truncate">
+                            {new Date(doc.created_at).toLocaleString()}
+                          </TableCell>
+                          <TableCell className="truncate">
+                            {new Date(doc.updated_at).toLocaleString()}
+                          </TableCell>
+                        </TableRow>
+                      ))}
                     </TableBody>
                   </Table>
                 </div>
