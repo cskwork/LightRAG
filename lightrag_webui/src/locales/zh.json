@@ -34,7 +34,9 @@
   },
   "common": {
     "cancel": "取消",
-    "save": "保存"
+    "save": "保存",
+    "saving": "保存中...",
+    "saveFailed": "保存失败"
   },
   "documentPanel": {
     "clearDocuments": {
@@ -53,6 +55,32 @@
       "cacheClearFailed": "清空缓存失败：\n{{error}}",
       "failed": "清空文档失败：\n{{message}}",
       "error": "清空文档失败：\n{{error}}"
+    },
+    "deleteDocuments": {
+      "button": "删除",
+      "tooltip": "删除选中的文档",
+      "title": "删除文档",
+      "description": "此操作将永久删除选中的文档",
+      "warning": "警告：此操作将永久删除选中的文档，无法恢复！",
+      "confirm": "确定要删除 {{count}} 个选中的文档吗？",
+      "confirmPrompt": "请输入 yes 确认操作",
+      "confirmPlaceholder": "输入 yes 确认",
+      "confirmButton": "确定",
+      "deleteFileOption": "同时删除上传文件",
+      "deleteFileTooltip": "选中此选项将同时删除服务器上对应的上传文件",
+      "success": "文档删除流水线启动成功",
+      "failed": "删除文档失败：\n{{message}}",
+      "error": "删除文档失败：\n{{error}}",
+      "busy": "流水线被占用，请稍后再试",
+      "notAllowed": "没有操作权限",
+      "cannotDeleteAll": "无法删除所有文档。如确实需要删除所有文档请使用清空文档功能。"
+    },
+    "deselectDocuments": {
+      "button": "取消选择",
+      "tooltip": "取消选择所有文档",
+      "title": "取消选择文档",
+      "description": "此操作将清除所有选中的文档（已选择 {{count}} 个）",
+      "confirmButton": "取消全部选择"
     },
     "uploadDocuments": {
       "button": "上传",
@@ -103,7 +131,8 @@
         "chunks": "分块",
         "created": "创建时间",
         "updated": "更新时间",
-        "metadata": "元数据"
+        "metadata": "元数据",
+        "select": "选择"
       },
       "status": {
         "all": "全部",
@@ -340,17 +369,15 @@
       "historyTurns": "历史轮次",
       "historyTurnsTooltip": "响应上下文中考虑的完整对话轮次（用户-助手对）数量",
       "historyTurnsPlaceholder": "历史轮次数",
-      "hlKeywords": "高级关键词",
-      "hlKeywordsTooltip": "检索中优先考虑的高级关键词列表。用逗号分隔",
-      "hlkeywordsPlaceHolder": "输入关键词",
-      "llKeywords": "低级关键词",
-      "llKeywordsTooltip": "用于细化检索重点的低级关键词列表。用逗号分隔",
       "onlyNeedContext": "仅需上下文",
       "onlyNeedContextTooltip": "如果为True，仅返回检索到的上下文而不生成响应",
       "onlyNeedPrompt": "仅需提示",
       "onlyNeedPromptTooltip": "如果为True，仅返回生成的提示而不产生响应",
       "streamResponse": "流式响应",
-      "streamResponseTooltip": "如果为True，启用实时流式输出响应"
+      "streamResponseTooltip": "如果为True，启用实时流式输出响应",
+      "userPrompt": "用户提示词",
+      "userPromptTooltip": "向LLM提供额外的响应要求（与查询内容无关，仅用于处理输出）。",
+      "userPromptPlaceholder": "输入自定义提示词（可选）"
     }
   },
   "apiSite": {

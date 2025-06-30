@@ -1,9 +1,56 @@
-# LightRAG: Simple and Fast Retrieval-Augmented Generation
+<div align="center">
 
-<img src="./README.assets/b2aaf634151b4706892693ffb43d9093.png" width="800" alt="LightRAG Diagram">
+<div style="margin: 20px 0;">
+  <img src="./assets/logo.png" width="120" height="120" alt="LightRAG Logo" style="border-radius: 20px; box-shadow: 0 8px 32px rgba(0, 217, 255, 0.3);">
+</div>
+
+# 🚀 LightRAG: Simple and Fast Retrieval-Augmented Generation
+
+<div align="center">
+    <a href="https://trendshift.io/repositories/13043" target="_blank"><img src="https://trendshift.io/api/badge/repositories/13043" alt="HKUDS%2FLightRAG | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+</div>
+
+<div align="center">
+  <div style="width: 100%; height: 2px; margin: 20px 0; background: linear-gradient(90deg, transparent, #00d9ff, transparent);"></div>
+</div>
+
+<div align="center">
+  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; text-align: center;">
+    <p>
+      <a href='https://github.com/HKUDS/LightRAG'><img src='https://img.shields.io/badge/🔥项目-主页-00d9ff?style=for-the-badge&logo=github&logoColor=white&labelColor=1a1a2e'></a>
+      <a href='https://arxiv.org/abs/2410.05779'><img src='https://img.shields.io/badge/📄arXiv-2410.05779-ff6b6b?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e'></a>
+      <a href="https://github.com/HKUDS/LightRAG/stargazers"><img src='https://img.shields.io/github/stars/HKUDS/LightRAG?color=00d9ff&style=for-the-badge&logo=star&logoColor=white&labelColor=1a1a2e' /></a>
+    </p>
+    <p>
+      <img src="https://img.shields.io/badge/🐍Python-3.10-4ecdc4?style=for-the-badge&logo=python&logoColor=white&labelColor=1a1a2e">
+      <a href="https://pypi.org/project/lightrag-hku/"><img src="https://img.shields.io/pypi/v/lightrag-hku.svg?style=for-the-badge&logo=pypi&logoColor=white&labelColor=1a1a2e&color=ff6b6b"></a>
+    </p>
+    <p>
+      <a href="https://discord.gg/yF2MmDJyGJ"><img src="https://img.shields.io/badge/💬Discord-社区-7289da?style=for-the-badge&logo=discord&logoColor=white&labelColor=1a1a2e"></a>
+      <a href="https://github.com/HKUDS/LightRAG/issues/285"><img src="https://img.shields.io/badge/💬微信群-交流-07c160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=1a1a2e"></a>
+    </p>
+    <p>
+      <a href="README_zh.md"><img src="https://img.shields.io/badge/🇨🇳中文版-1a1a2e?style=for-the-badge"></a>
+      <a href="README.md"><img src="https://img.shields.io/badge/🇺🇸English-1a1a2e?style=for-the-badge"></a>
+    </p>
+  </div>
+</div>
+
+</div>
+
+<div align="center" style="margin: 30px 0;">
+  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="800">
+</div>
+
+<div align="center" style="margin: 30px 0;">
+    <img src="./README.assets/b2aaf634151b4706892693ffb43d9093.png" width="800" alt="LightRAG Diagram">
+</div>
+
+---
 
 ## 🎉 新闻
 
+- [X] [2025.06.05]🎯📢LightRAG现已集成RAG-Anything，支持全面的多模态文档解析与RAG能力（PDF、图片、Office文档、表格、公式等）。详见下方[多模态处理模块](https://github.com/HKUDS/LightRAG?tab=readme-ov-file#多模态文档处理rag-anything集成)。
 - [X] [2025.03.18]🎯📢LightRAG现已支持引文功能。
 - [X] [2025.02.05]🎯📢我们团队发布了[VideoRAG](https://github.com/HKUDS/VideoRAG)，用于理解超长上下文视频。
 - [X] [2025.01.13]🎯📢我们团队发布了[MiniRAG](https://github.com/HKUDS/MiniRAG)，使用小型模型简化RAG。
@@ -48,10 +95,24 @@ pip install "lightrag-hku[api]"
 * 从源代码安装
 
 ```bash
+git clone https://github.com/HKUDS/LightRAG.git
+cd LightRAG
 # 如有必要，创建Python虚拟环境
 # 以可编辑模式安装并支持API
 pip install -e ".[api]"
 ```
+
+* 使用 Docker Compose 启动 LightRAG 服务器
+
+```
+git clone https://github.com/HKUDS/LightRAG.git
+cd LightRAG
+cp env.example .env
+# modify LLM and Embedding settings in .env
+docker compose up
+```
+
+> 在此获取LightRAG docker镜像历史版本: [LightRAG Docker Images]( https://github.com/HKUDS/LightRAG/pkgs/container/lightrag)
 
 ### 安装LightRAG Core
 
@@ -91,9 +152,13 @@ python examples/lightrag_openai_demo.py
 
 如需流式响应示例的实现代码，请参阅 `examples/lightrag_openai_compatible_demo.py`。运行前，请确保根据需求修改示例代码中的LLM及嵌入模型配置。
 
-**注意事项**：在运行demo程序的时候需要注意，不同的测试程序可能使用的是不同的embedding模型，更换不同的embeding模型的时候需要把清空数据目录（`./dickens`），否则层序执行会出错。如果你想保留LLM缓存，可以在清除数据目录是保留`kv_store_llm_response_cache.json`文件。
+**注意1**：在运行demo程序的时候需要注意，不同的测试程序可能使用的是不同的embedding模型，更换不同的embeding模型的时候需要把清空数据目录（`./dickens`），否则层序执行会出错。如果你想保留LLM缓存，可以在清除数据目录时保留`kv_store_llm_response_cache.json`文件。
+
+**注意2**：官方支持的示例代码仅为 `lightrag_openai_demo.py` 和 `lightrag_openai_compatible_demo.py` 两个文件。其他示例文件均为社区贡献内容，尚未经过完整测试与优化。
 
 ## 使用LightRAG Core进行编程
+
+> 如果您希望将LightRAG集成到您的项目中，建议您使用LightRAG Server提供的REST API。LightRAG Core通常用于嵌入式应用，或供希望进行研究与评估的学者使用。
 
 ### 一个简单程序
 
@@ -199,37 +264,70 @@ if __name__ == "__main__":
 
 ```python
 class QueryParam:
-    mode: Literal["local", "global", "hybrid", "naive", "mix"] = "global"
-    """指定检索模式：
-    - "local"：专注于上下文相关信息。
-    - "global"：利用全局知识。
-    - "hybrid"：结合本地和全局检索方法。
-    - "naive"：执行基本搜索，不使用高级技术。
-    - "mix"：集成知识图谱和向量检索。混合模式结合知识图谱和向量搜索：
-        - 同时使用结构化（KG）和非结构化（向量）信息
-        - 通过分析关系和上下文提供全面的答案
-        - 通过HTML img标签支持图像内容
-        - 允许通过top_k参数控制检索深度
+    """Configuration parameters for query execution in LightRAG."""
+
+    mode: Literal["local", "global", "hybrid", "naive", "mix", "bypass"] = "global"
+    """Specifies the retrieval mode:
+    - "local": Focuses on context-dependent information.
+    - "global": Utilizes global knowledge.
+    - "hybrid": Combines local and global retrieval methods.
+    - "naive": Performs a basic search without advanced techniques.
+    - "mix": Integrates knowledge graph and vector retrieval.
     """
+
     only_need_context: bool = False
-    """如果为True，仅返回检索到的上下文而不生成响应。"""
+    """If True, only returns the retrieved context without generating a response."""
+
+    only_need_prompt: bool = False
+    """If True, only returns the generated prompt without producing a response."""
+
     response_type: str = "Multiple Paragraphs"
-    """定义响应格式。示例：'Multiple Paragraphs'（多段落）, 'Single Paragraph'（单段落）, 'Bullet Points'（要点列表）。"""
-    top_k: int = 60
-    """要检索的顶部项目数量。在'local'模式下代表实体，在'global'模式下代表关系。"""
-    max_token_for_text_unit: int = 4000
-    """每个检索文本块允许的最大令牌数。"""
-    max_token_for_global_context: int = 4000
-    """全局检索中关系描述的最大令牌分配。"""
-    max_token_for_local_context: int = 4000
-    """本地检索中实体描述的最大令牌分配。"""
-    ids: list[str] | None = None # 仅支持PG向量数据库
-    """用于过滤RAG的ID列表。"""
-    model_func: Callable[..., object] | None = None
-    """查询使用的LLM模型函数。如果提供了此选项，它将代替LightRAG全局模型函数。
-    这允许为不同的查询模式使用不同的模型。
+    """Defines the response format. Examples: 'Multiple Paragraphs', 'Single Paragraph', 'Bullet Points'."""
+
+    stream: bool = False
+    """If True, enables streaming output for real-time responses."""
+
+    top_k: int = int(os.getenv("TOP_K", "60"))
+    """Number of top items to retrieve. Represents entities in 'local' mode and relationships in 'global' mode."""
+
+    max_token_for_text_unit: int = int(os.getenv("MAX_TOKEN_TEXT_CHUNK", "4000"))
+    """Maximum number of tokens allowed for each retrieved text chunk."""
+
+    max_token_for_global_context: int = int(
+        os.getenv("MAX_TOKEN_RELATION_DESC", "4000")
+    )
+    """Maximum number of tokens allocated for relationship descriptions in global retrieval."""
+
+    max_token_for_local_context: int = int(os.getenv("MAX_TOKEN_ENTITY_DESC", "4000"))
+    """Maximum number of tokens allocated for entity descriptions in local retrieval."""
+
+    hl_keywords: list[str] = field(default_factory=list)
+    """List of high-level keywords to prioritize in retrieval."""
+
+    ll_keywords: list[str] = field(default_factory=list)
+    """List of low-level keywords to refine retrieval focus."""
+
+    conversation_history: list[dict[str, str]] = field(default_factory=list)
+    """Stores past conversation history to maintain context.
+    Format: [{"role": "user/assistant", "content": "message"}].
     """
-    ...
+
+    history_turns: int = 3
+    """Number of complete conversation turns (user-assistant pairs) to consider in the response context."""
+
+    ids: list[str] | None = None
+    """List of ids to filter the results."""
+
+    model_func: Callable[..., object] | None = None
+    """Optional override for the LLM model function to use for this specific query.
+    If provided, this will be used instead of the global model function.
+    This allows using different models for different query modes.
+    """
+
+    user_prompt: str | None = None
+    """User-provided prompt for the query.
+    If proivded, this will be use instead of the default vaulue from prompt template.
+    """
 ```
 
 > top_k的默认值可以通过环境变量TOP_K更改。
@@ -380,7 +478,7 @@ rag = LightRAG(
     embedding_func=EmbeddingFunc(
         embedding_dim=768,
         max_token_size=8192,
-        func=lambda texts: ollama_embedding(
+        func=lambda texts: ollama_embed(
             texts,
             embed_model="nomic-embed-text"
         )
@@ -497,128 +595,23 @@ response = rag.query(
 )
 ```
 
-### 自定义提示词
+### 用户提示词 vs. 查询内容
 
-LightRAG现在支持自定义提示，以便对系统行为进行精细控制。以下是使用方法：
+当使用LightRAG查询内容的时候，不要把内容查询和与查询结果无关的输出加工写在一起。因为把两者混在一起会严重影响查询的效果。Query Param中的`user_prompt`就是为解决这一问题而设计的。`user_prompt`中的内容不参与RAG中的查询过程，它仅会在获得查询结果之后，与查询结果一起送给LLM，指导LLM如何处理查询结果。以下是使用方法：
 
 ```python
-# 创建查询参数
+# Create query parameters
 query_param = QueryParam(
-    mode="hybrid",  # 或其他模式："local"、"global"、"hybrid"、"mix"和"naive"
+    mode = "hybrid",  # Other modes：local, global, hybrid, mix, naive
+    user_prompt = "如需画图使用mermaid格式，节点名称用英文或拼音，显示名称用中文",
 )
 
-# 示例1：使用默认系统提示
+# Query and process
 response_default = rag.query(
-    "可再生能源的主要好处是什么？",
+    "请画出 Scrooge 的人物关系图谱",
     param=query_param
 )
 print(response_default)
-
-# 示例2：使用自定义提示
-custom_prompt = """
-您是环境科学领域的专家助手。请提供详细且结构化的答案，并附带示例。
----对话历史---
-{history}
-
----知识库---
-{context_data}
-
----响应规则---
-
-- 目标格式和长度：{response_type}
-"""
-response_custom = rag.query(
-    "可再生能源的主要好处是什么？",
-    param=query_param,
-    system_prompt=custom_prompt  # 传递自定义提示
-)
-print(response_custom)
-```
-
-### 关键词提取
-
-我们引入了新函数`query_with_separate_keyword_extraction`来增强关键词提取功能。该函数将关键词提取过程与用户提示分开，专注于查询以提高提取关键词的相关性。
-
-* 工作原理
-
-该函数将输入分为两部分：
-
-- `用户查询`
-- `提示`
-
-然后仅对`用户查询`执行关键词提取。这种分离确保提取过程是集中和相关的，不受`提示`中任何额外语言的影响。它还允许`提示`纯粹用于响应格式化，保持用户原始问题的意图和清晰度。
-
-* 使用示例
-
-这个`示例`展示了如何为教育内容定制函数，专注于为高年级学生提供详细解释。
-
-```python
-rag.query_with_separate_keyword_extraction(
-    query="解释重力定律",
-    prompt="提供适合学习物理的高中生的详细解释。",
-    param=QueryParam(mode="hybrid")
-)
-```
-
-### 插入自定义知识
-
-```python
-custom_kg = {
-    "chunks": [
-        {
-            "content": "Alice和Bob正在合作进行量子计算研究。",
-            "source_id": "doc-1"
-        }
-    ],
-    "entities": [
-        {
-            "entity_name": "Alice",
-            "entity_type": "person",
-            "description": "Alice是一位专门研究量子物理的研究员。",
-            "source_id": "doc-1"
-        },
-        {
-            "entity_name": "Bob",
-            "entity_type": "person",
-            "description": "Bob是一位数学家。",
-            "source_id": "doc-1"
-        },
-        {
-            "entity_name": "量子计算",
-            "entity_type": "technology",
-            "description": "量子计算利用量子力学现象进行计算。",
-            "source_id": "doc-1"
-        }
-    ],
-    "relationships": [
-        {
-            "src_id": "Alice",
-            "tgt_id": "Bob",
-            "description": "Alice和Bob是研究伙伴。",
-            "keywords": "合作 研究",
-            "weight": 1.0,
-            "source_id": "doc-1"
-        },
-        {
-            "src_id": "Alice",
-            "tgt_id": "量子计算",
-            "description": "Alice进行量子计算研究。",
-            "keywords": "研究 专业",
-            "weight": 1.0,
-            "source_id": "doc-1"
-        },
-        {
-            "src_id": "Bob",
-            "tgt_id": "量子计算",
-            "description": "Bob研究量子计算。",
-            "keywords": "研究 应用",
-            "weight": 1.0,
-            "source_id": "doc-1"
-        }
-    ]
-}
-
-rag.insert_custom_kg(custom_kg)
 ```
 
 ### 插入
@@ -904,23 +897,362 @@ updated_relation = rag.edit_relation("Google", "Google Mail", {
 })
 ```
 
-</details>
-
 所有操作都有同步和异步版本。异步版本带有前缀"a"（例如，`acreate_entity`，`aedit_relation`）。
 
-#### 实体操作
+</details>
+
+<details>
+<summary> <b>插入自定义知识</b> </summary>
+
+```python
+custom_kg = {
+    "chunks": [
+        {
+            "content": "Alice和Bob正在合作进行量子计算研究。",
+            "source_id": "doc-1"
+        }
+    ],
+    "entities": [
+        {
+            "entity_name": "Alice",
+            "entity_type": "person",
+            "description": "Alice是一位专门研究量子物理的研究员。",
+            "source_id": "doc-1"
+        },
+        {
+            "entity_name": "Bob",
+            "entity_type": "person",
+            "description": "Bob是一位数学家。",
+            "source_id": "doc-1"
+        },
+        {
+            "entity_name": "量子计算",
+            "entity_type": "technology",
+            "description": "量子计算利用量子力学现象进行计算。",
+            "source_id": "doc-1"
+        }
+    ],
+    "relationships": [
+        {
+            "src_id": "Alice",
+            "tgt_id": "Bob",
+            "description": "Alice和Bob是研究伙伴。",
+            "keywords": "合作 研究",
+            "weight": 1.0,
+            "source_id": "doc-1"
+        },
+        {
+            "src_id": "Alice",
+            "tgt_id": "量子计算",
+            "description": "Alice进行量子计算研究。",
+            "keywords": "研究 专业",
+            "weight": 1.0,
+            "source_id": "doc-1"
+        },
+        {
+            "src_id": "Bob",
+            "tgt_id": "量子计算",
+            "description": "Bob研究量子计算。",
+            "keywords": "研究 应用",
+            "weight": 1.0,
+            "source_id": "doc-1"
+        }
+    ]
+}
+
+rag.insert_custom_kg(custom_kg)
+```
+
+</details>
+
+<details>
+<summary> <b>其它实体与关系操作</b> </summary>
 
 - **create_entity**：创建具有指定属性的新实体
 - **edit_entity**：更新现有实体的属性或重命名它
-
-#### 关系操作
 
 - **create_relation**：在现有实体之间创建新关系
 - **edit_relation**：更新现有关系的属性
 
 这些操作在图数据库和向量数据库组件之间保持数据一致性，确保您的知识图谱保持连贯。
 
+</details>
+
+## 删除功能
+
+LightRAG提供了全面的删除功能，允许您删除文档、实体和关系。
+
+<details>
+<summary> <b>删除实体</b> </summary>
+
+您可以通过实体名称删除实体及其所有关联关系：
+
+```python
+# 删除实体及其所有关系（同步版本）
+rag.delete_by_entity("Google")
+
+# 异步版本
+await rag.adelete_by_entity("Google")
+```
+
+删除实体时会：
+- 从知识图谱中移除该实体节点
+- 删除该实体的所有关联关系
+- 从向量数据库中移除相关的嵌入向量
+- 保持知识图谱的完整性
+
+</details>
+
+<details>
+<summary> <b>删除关系</b> </summary>
+
+您可以删除两个特定实体之间的关系：
+
+```python
+# 删除两个实体之间的关系（同步版本）
+rag.delete_by_relation("Google", "Gmail")
+
+# 异步版本
+await rag.adelete_by_relation("Google", "Gmail")
+```
+
+删除关系时会：
+- 移除指定的关系边
+- 从向量数据库中删除关系的嵌入向量
+- 保留两个实体节点及其他关系
+
+</details>
+
+<details>
+<summary> <b>通过文档ID删除</b> </summary>
+
+您可以通过文档ID删除整个文档及其相关的所有知识：
+
+```python
+# 通过文档ID删除（异步版本）
+await rag.adelete_by_doc_id("doc-12345")
+```
+
+通过文档ID删除时的优化处理：
+- **智能清理**：自动识别并删除仅属于该文档的实体和关系
+- **保留共享知识**：如果实体或关系在其他文档中也存在，则会保留并重新构建描述
+- **缓存优化**：清理相关的LLM缓存以减少存储开销
+- **增量重建**：从剩余文档重新构建受影响的实体和关系描述
+
+删除过程包括：
+1. 删除文档相关的所有文本块
+2. 识别仅属于该文档的实体和关系并删除
+3. 重新构建在其他文档中仍存在的实体和关系
+4. 更新所有相关的向量索引
+5. 清理文档状态记录
+
+注意：通过文档ID删除是一个异步操作，因为它涉及复杂的知识图谱重构过程。
+
+</details>
+
+<details>
+<summary> <b>删除注意事项</b> </summary>
+
+**重要提醒：**
+
+1. **不可逆操作**：所有删除操作都是不可逆的，请谨慎使用
+2. **性能考虑**：删除大量数据时可能需要一些时间，特别是通过文档ID删除
+3. **数据一致性**：删除操作会自动维护知识图谱和向量数据库之间的一致性
+4. **备份建议**：在执行重要删除操作前建议备份数据
+
+**批量删除建议：**
+- 对于批量删除操作，建议使用异步方法以获得更好的性能
+- 大规模删除时，考虑分批进行以避免系统负载过高
+
+</details>
+
+## 实体合并
+
+<details>
+<summary> <b>合并实体及其关系</b> </summary>
+
+LightRAG现在支持将多个实体合并为单个实体，自动处理所有关系：
+
+```python
+# 基本实体合并
+rag.merge_entities(
+    source_entities=["人工智能", "AI", "机器智能"],
+    target_entity="AI技术"
+)
+```
+
+使用自定义合并策略：
+
+```python
+# 为不同字段定义自定义合并策略
+rag.merge_entities(
+    source_entities=["约翰·史密斯", "史密斯博士", "J·史密斯"],
+    target_entity="约翰·史密斯",
+    merge_strategy={
+        "description": "concatenate",  # 组合所有描述
+        "entity_type": "keep_first",   # 保留第一个实体的类型
+        "source_id": "join_unique"     # 组合所有唯一的源ID
+    }
+)
+```
+
+使用自定义目标实体数据：
+
+```python
+# 为合并后的实体指定确切值
+rag.merge_entities(
+    source_entities=["纽约", "NYC", "大苹果"],
+    target_entity="纽约市",
+    target_entity_data={
+        "entity_type": "LOCATION",
+        "description": "纽约市是美国人口最多的城市。",
+    }
+)
+```
+
+结合两种方法的高级用法：
+
+```python
+# 使用策略和自定义数据合并公司实体
+rag.merge_entities(
+    source_entities=["微软公司", "Microsoft Corporation", "MSFT"],
+    target_entity="微软",
+    merge_strategy={
+        "description": "concatenate",  # 组合所有描述
+        "source_id": "join_unique"     # 组合源ID
+    },
+    target_entity_data={
+        "entity_type": "ORGANIZATION",
+    }
+)
+```
+
+合并实体时：
+
+* 所有来自源实体的关系都会重定向到目标实体
+* 重复的关系会被智能合并
+* 防止自我关系（循环）
+* 合并后删除源实体
+* 保留关系权重和属性
+
+</details>
+
+## 多模态文档处理（RAG-Anything集成）
+
+LightRAG 现已与 [RAG-Anything](https://github.com/HKUDS/RAG-Anything) 实现无缝集成，这是一个专为 LightRAG 构建的**全能多模态文档处理RAG系统**。RAG-Anything 提供先进的解析和检索增强生成（RAG）能力，让您能够无缝处理多模态文档，并从各种文档格式中提取结构化内容——包括文本、图片、表格和公式——以集成到您的RAG流程中。
+
+**主要特性：**
+- **端到端多模态流程**：从文档摄取解析到智能多模态问答的完整工作流程
+- **通用文档支持**：无缝处理PDF、Office文档（DOC/DOCX/PPT/PPTX/XLS/XLSX）、图片和各种文件格式
+- **专业内容分析**：针对图片、表格、数学公式和异构内容类型的专用处理器
+- **多模态知识图谱**：自动实体提取和跨模态关系发现以增强理解
+- **混合智能检索**：覆盖文本和多模态内容的高级搜索能力，具备上下文理解
+
+**快速开始：**
+1. 安装RAG-Anything：
+   ```bash
+   pip install raganything
+   ```
+2. 处理多模态文档：
+    <details>
+    <summary> <b> RAGAnything 使用示例 </b></summary>
+
+    ```python
+        import asyncio
+        from raganything import RAGAnything
+        from lightrag import LightRAG
+        from lightrag.llm.openai import openai_complete_if_cache, openai_embed
+        from lightrag.utils import EmbeddingFunc
+        import os
+
+        async def load_existing_lightrag():
+            # 首先，创建或加载现有的 LightRAG 实例
+            lightrag_working_dir = "./existing_lightrag_storage"
+
+            # 检查是否存在之前的 LightRAG 实例
+            if os.path.exists(lightrag_working_dir) and os.listdir(lightrag_working_dir):
+                print("✅ Found existing LightRAG instance, loading...")
+            else:
+                print("❌ No existing LightRAG instance found, will create new one")
+
+            # 使用您的配置创建/加载 LightRAG 实例
+            lightrag_instance = LightRAG(
+                working_dir=lightrag_working_dir,
+                llm_model_func=lambda prompt, system_prompt=None, history_messages=[], **kwargs: openai_complete_if_cache(
+                    "gpt-4o-mini",
+                    prompt,
+                    system_prompt=system_prompt,
+                    history_messages=history_messages,
+                    api_key="your-api-key",
+                    **kwargs,
+                ),
+                embedding_func=EmbeddingFunc(
+                    embedding_dim=3072,
+                    max_token_size=8192,
+                    func=lambda texts: openai_embed(
+                        texts,
+                        model="text-embedding-3-large",
+                        api_key=api_key,
+                        base_url=base_url,
+                    ),
+                )
+            )
+
+            # 初始化存储（如果有现有数据，这将加载现有数据）
+            await lightrag_instance.initialize_storages()
+
+            # 现在使用现有的 LightRAG 实例初始化 RAGAnything
+            rag = RAGAnything(
+                lightrag=lightrag_instance,  # 传递现有的 LightRAG 实例
+                # 仅需要视觉模型用于多模态处理
+                vision_model_func=lambda prompt, system_prompt=None, history_messages=[], image_data=None, **kwargs: openai_complete_if_cache(
+                    "gpt-4o",
+                    "",
+                    system_prompt=None,
+                    history_messages=[],
+                    messages=[
+                        {"role": "system", "content": system_prompt} if system_prompt else None,
+                        {"role": "user", "content": [
+                            {"type": "text", "text": prompt},
+                            {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{image_data}"}}
+                        ]} if image_data else {"role": "user", "content": prompt}
+                    ],
+                    api_key="your-api-key",
+                    **kwargs,
+                ) if image_data else openai_complete_if_cache(
+                    "gpt-4o-mini",
+                    prompt,
+                    system_prompt=system_prompt,
+                    history_messages=history_messages,
+                    api_key="your-api-key",
+                    **kwargs,
+                )
+                # 注意：working_dir、llm_model_func、embedding_func 等都从 lightrag_instance 继承
+            )
+
+            # 查询现有的知识库
+            result = await rag.query_with_multimodal(
+                "What data has been processed in this LightRAG instance?",
+                mode="hybrid"
+            )
+            print("Query result:", result)
+
+            # 向现有的 LightRAG 实例添加新的多模态文档
+            await rag.process_document_complete(
+                file_path="path/to/new/multimodal_document.pdf",
+                output_dir="./output"
+            )
+
+        if __name__ == "__main__":
+            asyncio.run(load_existing_lightrag())
+    ```
+
+    </details>
+
+如需详细文档和高级用法，请参阅 [RAG-Anything 仓库](https://github.com/HKUDS/RAG-Anything)。
+
 ## Token统计功能
+
 <details>
 <summary> <b>概述和使用</b> </summary>
 
@@ -1017,77 +1349,6 @@ rag.export_data("complete_data.csv", include_vector_data=True)
 * 实体信息（名称、ID、元数据）
 * 关系数据（实体之间的连接）
 * 来自向量数据库的关系信息
-
-## 实体合并
-
-<details>
-<summary> <b>合并实体及其关系</b> </summary>
-
-LightRAG现在支持将多个实体合并为单个实体，自动处理所有关系：
-
-```python
-# 基本实体合并
-rag.merge_entities(
-    source_entities=["人工智能", "AI", "机器智能"],
-    target_entity="AI技术"
-)
-```
-
-使用自定义合并策略：
-
-```python
-# 为不同字段定义自定义合并策略
-rag.merge_entities(
-    source_entities=["约翰·史密斯", "史密斯博士", "J·史密斯"],
-    target_entity="约翰·史密斯",
-    merge_strategy={
-        "description": "concatenate",  # 组合所有描述
-        "entity_type": "keep_first",   # 保留第一个实体的类型
-        "source_id": "join_unique"     # 组合所有唯一的源ID
-    }
-)
-```
-
-使用自定义目标实体数据：
-
-```python
-# 为合并后的实体指定确切值
-rag.merge_entities(
-    source_entities=["纽约", "NYC", "大苹果"],
-    target_entity="纽约市",
-    target_entity_data={
-        "entity_type": "LOCATION",
-        "description": "纽约市是美国人口最多的城市。",
-    }
-)
-```
-
-结合两种方法的高级用法：
-
-```python
-# 使用策略和自定义数据合并公司实体
-rag.merge_entities(
-    source_entities=["微软公司", "Microsoft Corporation", "MSFT"],
-    target_entity="微软",
-    merge_strategy={
-        "description": "concatenate",  # 组合所有描述
-        "source_id": "join_unique"     # 组合源ID
-    },
-    target_entity_data={
-        "entity_type": "ORGANIZATION",
-    }
-)
-```
-
-合并实体时：
-
-* 所有来自源实体的关系都会重定向到目标实体
-* 重复的关系会被智能合并
-* 防止自我关系（循环）
-* 合并后删除源实体
-* 保留关系权重和属性
-
-</details>
 
 ## 缓存
 

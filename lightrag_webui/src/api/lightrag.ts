@@ -94,10 +94,6 @@ export type QueryRequest = {
   max_token_for_global_context?: number
   /** Maximum number of tokens allocated for entity descriptions in local retrieval. */
   max_token_for_local_context?: number
-  /** List of high-level keywords to prioritize in retrieval. */
-  hl_keywords?: string[]
-  /** List of low-level keywords to refine retrieval focus. */
-  ll_keywords?: string[]
   /**
    * Stores past conversation history to maintain context.
    * Format: [{"role": "user/assistant", "content": "message"}].
@@ -105,6 +101,8 @@ export type QueryRequest = {
   conversation_history?: Message[]
   /** Number of complete conversation turns (user-assistant pairs) to consider in the response context. */
   history_turns?: number
+  /** User-provided prompt for the query. If provided, this will be used instead of the default value from prompt template. */
+  user_prompt?: string
 }
 
 export type QueryResponse = {
@@ -114,6 +112,12 @@ export type QueryResponse = {
 export type DocActionResponse = {
   status: 'success' | 'partial_success' | 'failure' | 'duplicated'
   message: string
+}
+
+export type DeleteDocResponse = {
+  status: 'deletion_started' | 'busy' | 'not_allowed'
+  message: string
+  doc_id: string
 }
 
 export type DocStatus = 'pending' | 'processing' | 'processed' | 'failed'
@@ -514,6 +518,13 @@ export const clearCache = async (modes?: string[]): Promise<{
   message: string
 }> => {
   const response = await axiosInstance.post('/documents/clear_cache', { modes })
+  return response.data
+}
+
+export const deleteDocuments = async (docIds: string[], deleteFile: boolean = false): Promise<DeleteDocResponse> => {
+  const response = await axiosInstance.delete('/documents/delete_document', {
+    data: { doc_ids: docIds, delete_file: deleteFile }
+  })
   return response.data
 }
 
